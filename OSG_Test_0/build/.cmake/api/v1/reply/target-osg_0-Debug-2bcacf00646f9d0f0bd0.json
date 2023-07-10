@@ -71,11 +71,11 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/home/user/VSCodeProjects/OSG_Test_0/import/include"
+					"path" : "/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/import/include"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "/home/user/VSCodeProjects/OSG_Test_0/include"
+					"path" : "/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/include"
 				}
 			],
 			"language" : "CXX",
@@ -100,16 +100,16 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/home/user/VSCodeProjects/OSG_Test_0/import/lib/static",
+				"fragment" : "-L/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/import/lib/static",
 				"role" : "libraryPath"
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-L/home/user/VSCodeProjects/OSG_Test_0/import/lib/dynamic",
+				"fragment" : "-L/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/import/lib/dynamic",
 				"role" : "libraryPath"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/home/user/VSCodeProjects/OSG_Test_0/import/lib/static:/home/user/VSCodeProjects/OSG_Test_0/import/lib/dynamic",
+				"fragment" : "-Wl,-rpath,/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/import/lib/static:/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/import/lib/dynamic",
 				"role" : "libraries"
 			},
 			{

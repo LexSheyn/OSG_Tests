@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/user/VSCodeProjects/OSG_Test_0/build"
+			"value" : "/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -579,7 +579,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/user/VSCodeProjects/OSG_Test_0"
+			"value" : "/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1115,7 +1115,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/user/VSCodeProjects/OSG_Test_0/build"
+			"value" : "/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0/build"
 		},
 		{
 			"name" : "osg_0_SOURCE_DIR",
@@ -1127,7 +1127,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/user/VSCodeProjects/OSG_Test_0"
+			"value" : "/home/user/VSCodeProjects/OSG_Tests/OSG_Test_0"
 		}
 	],
 	"kind" : "cache",

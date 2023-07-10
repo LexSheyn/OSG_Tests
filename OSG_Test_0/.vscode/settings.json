@@ -69,6 +69,9 @@
         "polytopeintersector": "cpp",
         "matrixd": "cpp",
         "stateset": "cpp",
-        "dynamiclibrary": "cpp"
+        "dynamiclibrary": "cpp",
+        "options": "cpp",
+        "object": "cpp",
+        "readfile": "cpp"
     }
 }
