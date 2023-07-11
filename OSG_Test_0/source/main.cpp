@@ -1,6 +1,12 @@
+// Complex primitives will not be rendered correctly by the OpenGL API directly. This includes
+// concave polygons, self-intersecting polygons, and polygonds with holes. Only after being
+// subdivided into convex polygons, these non-convex polygons can be accepted by the OpenGL
+// rendering pipeline. The osgUtil::Tesselator class can be used for the tessellation
+// work in this case.
+
 #include <osg/Geometry>
 #include <osg/Geode>
-#include <osgUtil/SmoothingVisitor>
+#include <osgUtil/Tessellator>
 #include <osgViewer/Viewer>
 
 #include <iostream>
@@ -8,43 +14,46 @@
 
 int32_t main(int32_t argc, char** argv)
 {
-    osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array(5);
+    // We will create a concave polygon by using the osg::Geometry class. A simple
+    // polygon is concave if any of its internal edge angles is greater than 180 degrees.
+    // Here, the example geometry represents a quad with a cave on the right-hand side.
+    // It is drawn as a GL_POLYGON primitive.
 
-    (*vertices)[0] = osg::Vec3( 0.0f,  0.0f, 1.0f);
-    (*vertices)[1] = osg::Vec3(-1.0f, -1.0f, 0.0f);
-    (*vertices)[2] = osg::Vec3( 1.0f, -1.0f, 0.0f);
-    (*vertices)[3] = osg::Vec3( 1.0f,  1.0f, 0.0f);
-    (*vertices)[4] = osg::Vec3(-1.0f,  1.0f, 0.0f);
+    osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array();
 
-    osg::ref_ptr<osg::DrawElementsUInt> indices_top = new osg::DrawElementsUInt(GL_TRIANGLE_FAN, 12);
+    vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
+    vertices->push_back(osg::Vec3(2.0f, 0.0f, 0.0f));
+    vertices->push_back(osg::Vec3(2.0f, 0.0f, 1.0f));
+    vertices->push_back(osg::Vec3(1.0f, 0.0f, 1.0f));
+    vertices->push_back(osg::Vec3(1.0f, 0.0f, 2.0f));
+    vertices->push_back(osg::Vec3(2.0f, 0.0f, 2.0f));
+    vertices->push_back(osg::Vec3(2.0f, 0.0f, 3.0f));
+    vertices->push_back(osg::Vec3(0.0f, 0.0f, 3.0f));
 
-    (*indices_top)[0]  = 0;
-    (*indices_top)[1]  = 1;
-    (*indices_top)[2]  = 2;
-    (*indices_top)[3]  = 0;
-    (*indices_top)[4]  = 2;
-    (*indices_top)[5]  = 3;
-    (*indices_top)[6]  = 0;
-    (*indices_top)[7]  = 3;
-    (*indices_top)[8]  = 4;
-    (*indices_top)[9]  = 0;
-    (*indices_top)[10] = 4;
-    (*indices_top)[11] = 1;
+    osg::ref_ptr<osg::Vec3Array> normals = new osg::Vec3Array();
 
-    osg::ref_ptr<osg::DrawElementsUInt> indices_bottom = new osg::DrawElementsUInt(GL_QUADS, 4);
-
-    (*indices_bottom)[0] = 1;
-    (*indices_bottom)[1] = 2;
-    (*indices_bottom)[2] = 3;
-    (*indices_bottom)[3] = 4;
+    normals->push_back(osg::Vec3(0.0f, -1.0f, 0.0f));
 
     osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry();
 
     geometry->setVertexArray(vertices.get());
-    geometry->addPrimitiveSet(indices_top.get());
-    geometry->addPrimitiveSet(indices_bottom.get());
+    geometry->setNormalArray(normals.get());
 
-    osgUtil::SmoothingVisitor::smooth(*geometry);
+    geometry->setNormalBinding(osg::Geometry::BIND_OVERALL);
+    
+    osg::DrawArrays* drawArraysCommand = new osg::DrawArrays(GL_POLYGON, 0, 8);
+
+    geometry->addPrimitiveSet(drawArraysCommand);
+
+    // If we immediately add the geometry variable to an osg::Geode object and
+    // view it with osgViewer::Viewer, we will get an incorrect result, as shown
+    // in the following screenshot.
+    // To render the concave polygon correctly, we should use an
+    // osgUtil::Tessellator to re-tessellate it.
+
+    osgUtil::Tessellator tessellator;
+
+    tessellator.retessellatePolygons(*geometry);
 
     osg::ref_ptr<osg::Geode> root = new osg::Geode();
 
