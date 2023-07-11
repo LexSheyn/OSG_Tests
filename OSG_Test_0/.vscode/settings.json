@@ -97,6 +97,8 @@
         "viewereventhandlers": "cpp",
         "notify": "cpp",
         "shapedrawable": "cpp",
-        "bufferobject": "cpp"
+        "bufferobject": "cpp",
+        "polygonmode": "cpp",
+        "trianglefunctor": "cpp"
     }
 }
