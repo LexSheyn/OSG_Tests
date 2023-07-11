@@ -16,33 +16,31 @@ int32_t main(int32_t argc, char** argv)
     (*vertices)[3] = osg::Vec3( 1.0f,  1.0f, 0.0f);
     (*vertices)[4] = osg::Vec3(-1.0f,  1.0f, 0.0f);
 
-    osg::ref_ptr<osg::DrawElementsUInt> indices_top = new osg::DrawElementsUInt(GL_TRIANGLE_FAN, 12);
+    osg::ref_ptr<osg::DrawElementsUInt> indices = new osg::DrawElementsUInt(GL_TRIANGLES, 18);
 
-    (*indices_top)[0]  = 0;
-    (*indices_top)[1]  = 1;
-    (*indices_top)[2]  = 2;
-    (*indices_top)[3]  = 0;
-    (*indices_top)[4]  = 2;
-    (*indices_top)[5]  = 3;
-    (*indices_top)[6]  = 0;
-    (*indices_top)[7]  = 3;
-    (*indices_top)[8]  = 4;
-    (*indices_top)[9]  = 0;
-    (*indices_top)[10] = 4;
-    (*indices_top)[11] = 1;
-
-    osg::ref_ptr<osg::DrawElementsUInt> indices_bottom = new osg::DrawElementsUInt(GL_QUADS, 4);
-
-    (*indices_bottom)[0] = 1;
-    (*indices_bottom)[1] = 2;
-    (*indices_bottom)[2] = 3;
-    (*indices_bottom)[3] = 4;
+    (*indices)[0]  = 0;
+    (*indices)[1]  = 1;
+    (*indices)[2]  = 2;
+    (*indices)[3]  = 0;
+    (*indices)[4]  = 2;
+    (*indices)[5]  = 3;
+    (*indices)[6]  = 0;
+    (*indices)[7]  = 3;
+    (*indices)[8]  = 4;
+    (*indices)[9]  = 0;
+    (*indices)[10] = 4;
+    (*indices)[11] = 1;
+    (*indices)[12] = 1;
+    (*indices)[13] = 2;
+    (*indices)[14] = 4;
+    (*indices)[15] = 4;
+    (*indices)[16] = 2;
+    (*indices)[17] = 3;
 
     osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry();
 
     geometry->setVertexArray(vertices.get());
-    geometry->addPrimitiveSet(indices_top.get());
-    geometry->addPrimitiveSet(indices_bottom.get());
+    geometry->addPrimitiveSet(indices.get());
 
     osgUtil::SmoothingVisitor::smooth(*geometry);
 
