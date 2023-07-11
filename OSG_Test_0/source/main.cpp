@@ -1,11 +1,6 @@
-// Let's work on a common shape in order to see the steps to complete a renderable geometry
-// model. We will create a quadrangle with only four vertices as the four corners, and use
-// GL_QUADS mode to draw these vertices. The GL)DUADS mode tells OpenGL to combine
-// the first four coordinates in the vertex array as one quad, the second four as the second
-// quad, and so on.
-
 #include <osg/Geometry>
 #include <osg/Geode>
+#include <osgUtil/SmoothingVisitor>
 #include <osgViewer/Viewer>
 
 #include <iostream>
@@ -13,36 +8,49 @@
 
 int32_t main(int32_t argc, char** argv)
 {
-    // Create the vertex array and push the four corner points to the back of the array
-    // by using std::vector like operations.
+    osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array(5);
 
-    osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array();
+    (*vertices)[0] = osg::Vec3( 0.0f,  0.0f, 1.0f);
+    (*vertices)[1] = osg::Vec3(-1.0f, -1.0f, 0.0f);
+    (*vertices)[2] = osg::Vec3( 1.0f, -1.0f, 0.0f);
+    (*vertices)[3] = osg::Vec3( 1.0f,  1.0f, 0.0f);
+    (*vertices)[4] = osg::Vec3(-1.0f,  1.0f, 0.0f);
 
-    vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-    vertices->push_back(osg::Vec3(1.0f, 0.0f, 0.0f));
-    vertices->push_back(osg::Vec3(1.0f, 0.0f, 1.0f));
-    vertices->push_back(osg::Vec3(0.0f, 0.0f, 1.0f));
+    osg::ref_ptr<osg::DrawElementsUInt> indices = new osg::DrawElementsUInt(GL_TRIANGLES, 18);
 
-    // We have to indicate the normal of each vertex; otherwise OpenGL will use default
-    // (0, 0, 1) normal vector and the lighting equation calculation may be incorrect. The
-    // four vertices actually face the same direction, so a single normal vector is enough.
-    // We will also set the setNormalBinding() method to BIND_OVERALL later.
+    (*indices)[0]  = 0;
+    (*indices)[1]  = 1;
+    (*indices)[2]  = 2;
+    (*indices)[3]  = 0;
+    (*indices)[4]  = 2;
+    (*indices)[5]  = 3;
+    (*indices)[6]  = 0;
+    (*indices)[7]  = 3;
+    (*indices)[8]  = 4;
+    (*indices)[9]  = 0;
+    (*indices)[10] = 4;
+    (*indices)[11] = 1;
+    (*indices)[12] = 1;
+    (*indices)[13] = 2;
+    (*indices)[14] = 4;
+    (*indices)[15] = 4;
+    (*indices)[16] = 2;
+    (*indices)[17] = 3;
 
-    osg::ref_ptr<osg::Vec3Array> normals = new osg::Vec3Array();
+    osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry();
 
-    normals->push_back(osg::Vec3(0.0f, -1.0f, 0.0f));
+    geometry->setVertexArray(vertices.get());
+    geometry->addPrimitiveSet(indices.get());
 
-    // We will indicate a unique color value to each vertex and make them colored. By
-    // default, OpenGL will use shooth coloring and blend colors at each vertex together.
+    osgUtil::SmoothingVisitor::smooth(*geometry);
 
-    osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array();
+    osg::ref_ptr<osg::Geode> root = new osg::Geode();
 
-    colors->push_back(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
-    colors->push_back(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
-    colors->push_back(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f));
-    colors->push_back(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    root->addDrawable(geometry.get());
 
-    // TO DO: 5
+    osgViewer::Viewer viewer;
 
-    return 0;
+    viewer.setSceneData(root.get());
+
+    return viewer.run();
 }
